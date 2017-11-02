@@ -12,6 +12,7 @@
     }
 
     body {
+    	-webkit-tap-highlight-color: rgba(255,255,255,0);
         background-color: black;
         font-size: 100%;
         font-family: 'ls';
@@ -239,7 +240,15 @@
         position: absolute;
         left: 0;
     }
-
+    .preload{
+    	width: 0;
+    	height: 0;
+    	visibility: none;
+    }
+	.preload img{
+		width: 0;
+		height: 0;
+	}
     footer {
         text-align: right;
         width: 100%;
@@ -282,14 +291,20 @@
             </div>
         </div>
     </div>
-    <audio id="audio" autoplay>
+    <audio id="audio" type="audio/mp3">
     </audio>
+    <div class="preload">
+    	<audio class="preload-1"></audio>
+    	<audio class="preload-2"></audio>
+    	<img class="preload-img-1" src="" alt="">
+    	<img class="preload-img-2" src="" alt="">
+    </div>    
     <footer>
         <div>Made by timtnlee</div>
         <div>for windows/chrome</div>
     </footer>
     <script>
-    var playIndex = 0;
+    var playIndex = sourceList.length;
     var haventChange = true;
     var loadComplete = false;
     var audio = document.getElementById('audio');
@@ -304,6 +319,7 @@
     switchSongs();
     audio.onloadstart = function() {
     	document.querySelector('.loading').classList.remove('loadComplete')
+    	audio.play();//seems mobile cant autoplay;
     	haventChange=true;
         loadComplete = false;
     }
@@ -335,7 +351,7 @@
     }
 
     function backSong() {
-        if (playIndex == 0) {
+        if (playIndex ==0) {
             playIndex = totalSongs;
         }
         playIndex--;
@@ -355,13 +371,21 @@
         if (this.classList.contains('coverAnimate')) {
             this.classList.add('coverAnimateLast')
             this.classList.remove('coverAnimate')
-            var info = sourceList[playIndex % totalSongs];
+            var index=playIndex % totalSongs;
+            var info = sourceList[index];
+            var infoPre=(index==0)?sourceList[totalSongs-1]:sourceList[index-1]; 
+            var infoNext=(index==totalSongs-1)?sourceList[1]:sourceList[index+1]; 
             audio.src = info.src;
             document.querySelector('.info-name').textContent = info.name;
             document.querySelector('.info-singer').textContent = info.singer;
             document.getElementById('cover-img').src = info.img;
             document.getElementById('play-btn').classList.remove('pause')
             this.classList.remove('coverAnimate')
+            //preload next/prev songs & img to cache
+            document.querySelector('.preload-1').src = infoPre.src;
+            document.querySelector('.preload-2').src = infoNext.src;
+            document.querySelector('.preload-img-1').src = infoPre.img;
+            document.querySelector('.preload-img-2').src = infoNext.img;
         } else {
             this.classList.remove('coverAnimateLast')
         }
