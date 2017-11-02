@@ -1,338 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<script src="source.js"></script>
-	<style type="text/css">
-	@font-face{
-		font-family:'ls';
-		src:url('GenJyuuGothic-Monospace-ExtraLight.ttf');
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="source.js"></script>
+    <style type="text/css">
+    @font-face {
+        font-family: 'ls';
+        src: url('GenJyuuGothic-Monospace-ExtraLight.ttf');
+    }
+
+    body {
+        background-color: black;
+        font-size: 100%;
+        font-family: 'ls';
+        user-select: none;
+        margin: 0;
+        text-align: center;
+        color: white;
+    }
+
+    #player {
+        box-sizing: border-box;
+        width: 80%;
+        max-width: 550px;
+        position: relative;
+        top: 20vh;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    #player .cover {
+        position: relative;
+        width: 100%;
+        height: 250px;
+    }
+
+    #player .coverAnimate {
+        animation: coverAnimate 0.5s forwards;
+    }
+
+    #player .coverAnimateLast {
+        animation: coverAnimateLast 0.5s forwards;
+    }
+
+    @keyframes coverAnimate {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes coverAnimateLast {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .cover #cover {
+        opacity: 0.9;
+        text-align: left;
+        position: absolute;
+        left: 15%;
+        width: 70%;
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .cover #info {
+        background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+        top: 0;
+        /* transform: translateY(-50%); */
+        text-shadow: 1px 1px 1px gray;
+        text-align: right;
+        position: absolute;
+        width: 60%;
+        height: 250px;
+        right: 14%;
+    }
+
+    #info .center {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%)
+    }
+
+    #info .info-name {
+        font-size: 22px;
+    }
+
+    #info .info-singer {
+        font-size: 16px;
+    }
+	.cover .loading{
+		box-sizing: border-box;
+		padding-top: 10%;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.6)
 	}
-		body{
-			background-color: black;
-			font-size:100%;
-			font-family: 'ls';
-			user-select: none;
-			margin:0;
-			text-align: center;
-			color: white;
-		}
-		#player{
-			box-sizing: border-box;
-			width:80%;
-			max-width: 550px;
-			position:relative;
-			top:20vh;
-			left: 50%;
-			transform: translateX(-50%);
-			text-align: center;
-		}
-		#player .cover{
-			position: relative;
-			width:100%;
-			height:250px;
-		}
-		#player .coverAnimate{
-			animation: coverAnimate 0.5s forwards;
-		}
-		#player .coverAnimateLast{
-			animation: coverAnimateLast 0.5s forwards;
-		}
-		@keyframes coverAnimate{
-			0%{
-				opacity: 1;
-			}
-			100%{
-				opacity: 0;
-			}
-		}
-		@keyframes coverAnimateLast{
-			0%{
-				opacity: 0;
-			}
-			100%{
-				opacity: 1;
-			}
-		}
-		.cover #cover{
-			opacity: 0.9;
-			text-align: left;
-			position:absolute;
-			left:15%;
-			width: 70%;
-			height:250px;
-			overflow: hidden;
-		}
-		.cover #info{
-			background: linear-gradient(to right, rgba(0,0,0,0),rgba(0, 0, 0, 1));
-			top:0;
-			/* transform: translateY(-50%); */
-			text-shadow: 1px 1px 1px gray;
-			text-align: right;
-			position: absolute;
-			width: 60%;
-			height: 250px;
-			right: 14%;
-		}
-		#info .center{
-			position: relative;
-			top: 50%;
-			transform: translateY(-50%)
-		}
-		#info .info-name{
-			font-size:22px;
-		}
-		#info .info-singer{
-			font-size:16px;
-		}
-		.cover #cover img{
-			height: 100%;
-		}
-		.cover .arrow{
-			transition: opacity 0.8s;
-			cursor: pointer;
-			width: 10%;
-			position: absolute;
-			top:50%;
-			transform: translateY(-50%);
-			opacity: 0.2;
-		}
-		.cover .arrow:hover{
-			opacity: 0.6;
-		}
-		.cover #back{
-			left: 0;
-		}
-		.cover #next{
-			right:0;
-		}
-		#player .controller{
-			margin-top:20px;
-			position: relative;
-			width: 100%;
-			cursor: pointer;
-			height: 5px;
-			overflow-x: hidden;
-			box-shadow: 1px 1px 6px rgba(30,30,30,0.9);
-		}
-		.controller .bar{
-			position: absolute;
-			width:100%;
-			height: 5px;
-			background-color:gray;
-		}
-		.controller .bar-cover{
-			left: -100%;
-			position: absolute;
-			width:100%;
-			height: 5px;
-			background-color:white;
-		}
-		#player .panel{
-			margin-top:10px;
-			position: relative;
-			width: 100%;
-			height: 50px;
-		}
-		.panel #play-btn{
-			transition: all 0.6s;
-			position: absolute;
-			left: 50%;
-			transform: translateX(-50%);
-			cursor: pointer;
-			width: 20px;
-			height: 20px;
-			border-radius: 2px;
-			clip-path: polygon(0% 0%,100% 0%,100% 100%,0% 100%);
-			background-color: rgba(255,0,0,0.6);
-		}
-		.panel #play-btn.pause{
-			transform: rotateX(10deg);clip-path: 
-			polygon(0% 0%,100% 50%,100% 50%,0% 100%);
-		}
-		.vol-controll{
-			position: absolute;
-			right: 0;
-			width: 30%;
-			max-width: 100px;
-		}
-		.vol-controll img{
-			position: absolute;
-			left: 0px;
-			width: 16px;
-		}
-		#vol-btn{
-			cursor: pointer;
-			position: absolute;
-			left: 16px;
-			width: 80%;
-			height: 10px;
-			overflow: hidden;
-			-webkit-appearance: none;
-			outline : none;/* 避免點選藍線 */ 
-			background: none;
-		}
-		#vol-btn::-webkit-slider-thumb{
-			position: relative;
-			-webkit-appearance: none;
-			width: 10px;
-			height: 10px;
-			background-color: lightgrey;
-			border-radius: 100%;
-		}
-		#vol-btn:before{
-			content: "";
-			width: 80px;
-			top: 4px;
-			height: 1px;
-			background-color: lightgrey;
-			position: absolute;
-		}
-		.timer{
-			font-size: 12px;
-			position: absolute;
-			left: 0;
-		}
-		footer{
-			text-align: right;
-			width: 100%;
-			padding-bottom: 5px;
-			font-size: 12px;
-			color: gray;
-			position: absolute;
-			bottom: 0;
-		}
-	</style>
+	.cover .loading.loadComplete{
+		display: none;
+	}
+    .cover #cover img {
+        height: 100%;
+    }
+
+    .cover .arrow {
+        transition: opacity 0.8s;
+        cursor: pointer;
+        width: 10%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.2;
+    }
+
+    .cover .arrow:hover {
+        opacity: 0.6;
+    }
+
+    .cover #back {
+        left: 0;
+    }
+
+    .cover #next {
+        right: 0;
+    }
+
+    #player .controller {
+        margin-top: 20px;
+        position: relative;
+        width: 100%;
+        cursor: pointer;
+        height: 5px;
+        overflow-x: hidden;
+        box-shadow: 1px 1px 6px rgba(30, 30, 30, 0.9);
+    }
+
+    .controller .bar {
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+    }
+
+    .controller .bar-cover {
+        left: -100%;
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        background-color: white;
+    }
+
+    #player .panel {
+        margin-top: 10px;
+        position: relative;
+        width: 100%;
+        height: 50px;
+    }
+
+    .panel #play-btn {
+        transition: all 0.6s;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        background-color: rgba(255, 0, 0, 0.6);
+    }
+
+    .panel #play-btn.pause {
+        transform: rotateX(10deg);
+        clip-path: polygon(0% 0%, 100% 50%, 100% 50%, 0% 100%);
+    }
+
+    .vol-controll {
+        position: absolute;
+        right: 0;
+        width: 30%;
+        max-width: 100px;
+    }
+
+    .vol-controll img {
+        position: absolute;
+        left: 0px;
+        width: 16px;
+    }
+
+    #vol-btn {
+        cursor: pointer;
+        position: absolute;
+        left: 16px;
+        width: 80%;
+        height: 10px;
+        -webkit-appearance: none;
+        outline: none;
+        /* 避免點選藍線 */
+        background: none;
+    }
+
+    #vol-btn::-webkit-slider-thumb {
+        transition: all 0.3s;
+        position: relative;
+        -webkit-appearance: none;
+        width: 10px;
+        height: 10px;
+        background-color: lightgrey;
+        border-radius: 100%;
+    }
+
+    #vol-btn::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+    }
+
+    #vol-btn:before {
+        content: "";
+        width: 80px;
+        top: 4px;
+        height: 1px;
+        background-color: lightgrey;
+        position: absolute;
+    }
+
+    .timer {
+        font-size: 12px;
+        position: absolute;
+        left: 0;
+    }
+
+    footer {
+        text-align: right;
+        width: 100%;
+        padding-bottom: 5px;
+        font-size: 12px;
+        color: gray;
+        position: absolute;
+        bottom: 0;
+    }
+    </style>
 </head>
+
 <body>
-	<div id="player">
-		<div class="cover">			
-			<div id="cover"><img id="cover-img" src=""></div>
-			<div id="info">
-				<div class="center">
-					<div class="info-name"></div>
-					<div class="info-singer"></div>
-				</div>
-			</div>
-			<img id="back" class="arrow" src="img/back.svg" onclick="backSong()">
-			<img id="next" class="arrow" src="img/next.svg" onclick="nextSong()">
-		</div>
-		<div class="controller">
-			<div class="bar"></div>
-			<div class="bar-cover"></div>
-		</div>
-		<div class="panel">
-			<div class="timer">
-				<span class="timer-now"></span>
-				<span class="timer-total"></span>
-			</div>
-			<div id="play-btn"></div>
-			<div class="vol-controll">
-				<img src="img/vol-icon.png" alt="">
-				<input type="range" id="vol-btn" max="10" min="0" value="10">
-			</div>			
-		</div>
-	</div>
-	<audio id="audio" autoplay>
-	</audio>
-	<footer>
-		<div>Made by timtnlee</div>
-		<div>for windows/chrome</div>
-	</footer>
-<script> 
-	var playIndex=0;
-    var audio=document.getElementById('audio');
-    var cover=document.querySelector('.cover');
-    var totalSongs=sourceList.length;
-    var requestAnimation=window.requestAnimationFrame||window.webkitRequestAnimationFrame;
-    audio.loop=false;
-    audio.volume=1;
-    audio.onended=function(){
-    	nextSong()
+    <div id="player">
+        <div class="cover">
+            <div id="cover"><img id="cover-img" src=""></div>
+            <div id="info">
+                <div class="center">
+                    <div class="info-name"></div>
+                    <div class="info-singer"></div>
+                </div>
+            </div>
+            <img id="back" class="arrow" src="img/back.svg" onclick="backSong()">
+            <img id="next" class="arrow" src="img/next.svg" onclick="nextSong()">
+            <div class="loading">loading</div>
+        </div>
+        <div class="controller">
+            <div class="bar"></div>
+            <div class="bar-cover"></div>
+        </div>
+        <div class="panel">
+            <div class="timer">
+                <span class="timer-now"></span>
+                <span class="timer-total"></span>
+            </div>
+            <div id="play-btn"></div>
+            <div class="vol-controll">
+                <img src="img/vol-icon.png" alt="">
+                <input type="range" id="vol-btn" max="10" min="0" value="10">
+            </div>
+        </div>
+    </div>
+    <audio id="audio" autoplay>
+    </audio>
+    <footer>
+        <div>Made by timtnlee</div>
+        <div>for windows/chrome</div>
+    </footer>
+    <script>
+    var playIndex = 0;
+    var haventChange = true;
+    var loadComplete = false;
+    var audio = document.getElementById('audio');
+    var cover = document.querySelector('.cover');
+    var totalSongs = sourceList.length;
+    var requestAnimation = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
+    audio.loop = false;
+    audio.volume = 1;
+    audio.onended = function() {
+        nextSong()
     }
     switchSongs();
+    audio.onloadstart = function() {
+    	document.querySelector('.loading').classList.remove('loadComplete')
+    	haventChange=true;
+        loadComplete = false;
+    }
+    audio.oncanplay = function() {
+    	document.querySelector('.loading').classList.add('loadComplete')
+        loadComplete = true;
+    }
     states()
-    function states(){
-    	var currentTime=audio.currentTime;
-    	document.querySelector('.bar-cover').style.transform="translateX("+(currentTime/audio.duration)*100+"%)"
-    	var sec=Math.floor(currentTime%60);
-    	var min=Math.floor(currentTime/60);
-    	var min_zero=(min<10)?'0':'';
-    	var sec_zero=(sec<10)?'0':'';
-    	document.querySelector('.timer-now').textContent=min_zero+min+":"+sec_zero+sec;
-    	requestAnimation(states)
+
+    function states() {
+        if (loadComplete) {
+            var currentTime = audio.currentTime;
+            document.querySelector('.bar-cover').style.transform = "translateX(" + (currentTime / audio.duration) * 100 + "%)"
+            var sec = Math.floor(currentTime % 60);
+            var min = Math.floor(currentTime / 60);
+            var min_zero = (min < 10) ? '0' : '';
+            var sec_zero = (sec < 10) ? '0' : '';
+            document.querySelector('.timer-now').textContent = min_zero + min + ":" + sec_zero + sec;
+            if (haventChange) {
+                document.querySelector('.timer-total').textContent = "/" + Math.floor(audio.duration / 60) + ":" + Math.floor(audio.duration % 60);
+                haventChange = false;
+            }
+        }
+        requestAnimation(states)
     }
-    function barSet(percentage){
-    	document.querySelector('.bar-cover').style.transform="translateX("+percentage*100+"%)"
+
+    function barSet(percentage) {
+        document.querySelector('.bar-cover').style.transform = "translateX(" + percentage * 100 + "%)"
     }
-    function backSong(){
-    	if(playIndex==0){
-    		playIndex=totalSongs;    		
-    	}
-    	playIndex--;
-    	switchSongs()
+
+    function backSong() {
+        if (playIndex == 0) {
+            playIndex = totalSongs;
+        }
+        playIndex--;
+        switchSongs()
     }
-    function nextSong(){
-    	playIndex++;
-    	switchSongs()
+
+    function nextSong() {
+        playIndex++;
+        switchSongs()
     }
-    function switchSongs(){  
-    	cover.classList.remove('coverAnimateLast')
-		cover.classList.add('coverAnimate')	
+
+    function switchSongs() {
+        cover.classList.remove('coverAnimateLast')
+        cover.classList.add('coverAnimate')
     }
-    cover.addEventListener('animationend',function(){//after flicker, switch songs.
-    	if(this.classList.contains('coverAnimate')){
-    		this.classList.add('coverAnimateLast')
-    		this.classList.remove('coverAnimate')    		
-    		var info=sourceList[playIndex%totalSongs];
-	    	audio.src=info.src;
-	    	document.querySelector('.info-name').textContent=info.name;
-			document.querySelector('.info-singer').textContent=info.singer;
-			document.getElementById('cover-img').src=info.img;
-			document.getElementById('play-btn').classList.remove('pause')
-			setTimeout(function(){
-				document.querySelector('.timer-total').textContent="/"+Math.floor(audio.duration/60)+":"+Math.floor(audio.duration%60);
-			},80)    		
-			this.classList.remove('coverAnimate')
-    	}else{
-    		this.classList.remove('coverAnimateLast')
-    	}    	
+    cover.addEventListener('animationend', function() { //after flicker, switch songs.
+        if (this.classList.contains('coverAnimate')) {
+            this.classList.add('coverAnimateLast')
+            this.classList.remove('coverAnimate')
+            var info = sourceList[playIndex % totalSongs];
+            audio.src = info.src;
+            document.querySelector('.info-name').textContent = info.name;
+            document.querySelector('.info-singer').textContent = info.singer;
+            document.getElementById('cover-img').src = info.img;
+            document.getElementById('play-btn').classList.remove('pause')
+            this.classList.remove('coverAnimate')
+        } else {
+            this.classList.remove('coverAnimateLast')
+        }
     })
-    function playBtn(){
-    	if(audio.paused){
-    		audio.play()
-    		this.classList.remove('pause')
-    	}
-    	else{
-    		audio.pause()
-    		this.classList.add('pause')
-    	}
+
+    function playBtn() {
+        if (audio.paused) {
+            audio.play()
+            this.classList.remove('pause')
+        } else {
+            audio.pause()
+            this.classList.add('pause')
+        }
     }
-    document.getElementById('vol-btn').addEventListener('input',function(){
-    	console.log((this.value)/10)
-    	audio.volume=(this.value)/10
+    document.getElementById('vol-btn').addEventListener('input', function() {
+        console.log((this.value) / 10)
+        audio.volume = (this.value) / 10
     })
-    document.getElementById('play-btn').addEventListener('click',playBtn)
-    var controller=document.querySelector('.controller');
-    window.addEventListener('mouseup',function(){
-    	controller.classList.remove('hold')
+    document.getElementById('play-btn').addEventListener('click', playBtn)
+    var controller = document.querySelector('.controller');
+    window.addEventListener('mouseup', function() {
+        controller.classList.remove('hold')
     })
-    window.addEventListener('mousemove',function(e){
-    	if(controller.classList.contains('hold')){
-    		var pos=(e.clientX-controller.getClientRects()[0].left)/controller.getClientRects()[0].width
-    		audio.currentTime=pos*audio.duration;
-    	}
+    window.addEventListener('mousemove', function(e) {
+        if (controller.classList.contains('hold')) {
+            var pos = (e.clientX - controller.getClientRects()[0].left) / controller.getClientRects()[0].width
+            audio.currentTime = pos * audio.duration;
+        }
     })
-    controller.addEventListener('click',function(e){
-    	var pos=(e.clientX-this.getClientRects()[0].left)/this.getClientRects()[0].width
-    	audio.currentTime=pos*audio.duration;
+    controller.addEventListener('click', function(e) {
+        var pos = (e.clientX - this.getClientRects()[0].left) / this.getClientRects()[0].width
+        audio.currentTime = pos * audio.duration;
 
     })
-    controller.addEventListener('mousedown',function(){
-    	this.classList.add('hold')
+    controller.addEventListener('mousedown', function() {
+        this.classList.add('hold')
     })
-    
-</script> 
+    </script>
 </body>
+
 </html>
