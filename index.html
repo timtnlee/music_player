@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <script src="source.js"></script>
     <style type="text/css">
@@ -13,7 +12,7 @@
     }
 
     body {
-    	-webkit-tap-highlight-color: rgba(255,255,255,0);
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         background-color: black;
         font-size: 100%;
         font-family: 'ls';
@@ -101,17 +100,20 @@
     #info .info-singer {
         font-size: 16px;
     }
-	.cover .loading{
-		box-sizing: border-box;
-		padding-top: 10%;
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.6)
-	}
-	.cover .loading.loadComplete{
-		display: none;
-	}
+
+    .cover .loading {
+        box-sizing: border-box;
+        padding-top: 10%;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6)
+    }
+
+    .cover .loading.loadComplete {
+        display: none;
+    }
+
     .cover #cover img {
         height: 100%;
     }
@@ -137,9 +139,9 @@
     .cover #next {
         right: 0;
     }
+
     .cover #play-btn {
         transition: opacity 0.3s;
-        opacity: 0.9;
         text-align: left;
         position: absolute;
         left: 15%;
@@ -147,30 +149,38 @@
         height: 250px;
         overflow: hidden;
         cursor: pointer;
-        opacity: 0.3;
+        opacity: 0.5;
     }
-    .cover #play-btn:hover{
+
+    .cover #play-btn:hover {
         opacity: 1;
     }
-    .cover #play-btn img{
+
+    .cover #play-btn img {
         position: absolute;
         width: 100px;
-        top:50%;
+        top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
     }
-    .cover #play-btn img:first-child{
+
+    .cover #play-btn img:first-child {
         opacity: 0.6;
     }
-    .cover #play-btn img:last-child{
+
+    .cover #play-btn img:last-child {
         opacity: 0;
     }
-    .cover #play-btn.pause img:first-child{
+
+    .cover #play-btn.pause img:first-child {
         opacity: 0;
     }
-    .cover #play-btn.pause img:last-child{
-       opacity: 0.6;;
+
+    .cover #play-btn.pause img:last-child {
+        opacity: 0.6;
+        ;
     }
+
     #player .controller {
         margin-top: 20px;
         position: relative;
@@ -256,15 +266,70 @@
         position: absolute;
         left: 0;
     }
-    .preload{
-    	width: 0;
-    	height: 0;
-    	visibility: none;
+
+    .preload {
+        width: 0;
+        height: 0;
+        visibility: none;
     }
-	.preload img{
-		width: 0;
-		height: 0;
-	}
+
+    .preload img {
+        width: 0;
+        height: 0;
+    }
+    .listArea {
+        position: absolute;
+        width: 150px;
+        overflow: hidden;
+        height: 250px;
+        left:100%;
+        top:0;
+    }
+    @media screen and (max-width:900px){
+        .listArea {
+        width: 150px;
+        height: 150px;
+        left:50%;
+        top:320px;
+        transform: translateX(-50%);
+        }
+    }
+    .gradient{
+        width: 100%;
+        height:100%;
+        background:linear-gradient(to bottom, rgba(0,0,0,0.7),rgba(0,0,0,0),rgba(0,0,0,0), rgba(0,0,0,0.7));
+        position: absolute;
+        top:0;
+        pointer-events: none;
+    }
+    .infinite-list {
+        color: white;
+        height: 100%;
+        /*   border:1px solid black; */
+        width: 170px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        position: absolute;
+    }
+
+    .group div {
+        position: relative;
+        cursor: pointer;
+        box-sizing: border-box;
+        text-align: center;
+        width: 150px;
+        height: 50px;
+        opacity: 0.8;
+        font-size: 16px;
+        padding-top: 10px;
+    }
+    .group div:hover {
+        opacity: 1;
+        /*background-color: rgba(255, 255, 255, 0.1);*/
+        transform: scale(1.2);
+        text-shadow: 0px 0px 3px white;
+    }
+
     footer {
         text-align: right;
         width: 100%;
@@ -287,7 +352,7 @@
                     <div class="info-singer"></div>
                 </div>
             </div>
-            <div id="play-btn" class="pause">                
+            <div id="play-btn" class="pause">
                 <img src="img/pause-btn.png">
                 <img src="img/play-btn.png">
             </div>
@@ -309,15 +374,19 @@
                 <input type="range" id="vol-btn" max="10" min="0" value="10">
             </div>
         </div>
+        <div class="listArea">
+            <div class="infinite-list"></div>
+            <div class="gradient"></div>
+        </div>
     </div>
     <audio id="audio" type="audio/mp3">
     </audio>
     <div class="preload">
-    	<audio class="preload-1"></audio>
-    	<audio class="preload-2"></audio>
-    	<img class="preload-img-1" src="" alt="">
-    	<img class="preload-img-2" src="" alt="">
-    </div>    
+        <audio class="preload-1"></audio>
+        <audio class="preload-2"></audio>
+        <img class="preload-img-1" src="" alt="">
+        <img class="preload-img-2" src="" alt="">
+    </div>
     <footer>
         <div>Made by timtnlee</div>
         <div>for windows/chrome</div>
@@ -328,6 +397,7 @@
     var loadComplete = false;
     var audio = document.getElementById('audio');
     var cover = document.querySelector('.cover');
+    var infinite=document.querySelector('.infinite-list');
     var totalSongs = sourceList.length;
     var requestAnimation = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
     audio.loop = false;
@@ -335,16 +405,17 @@
     audio.onended = function() {
         nextSong()
     }
-    switchSongs();
     audio.onloadstart = function() {
-    	document.querySelector('.loading').classList.remove('loadComplete')
-    	haventChange=true;
+        document.querySelector('.loading').classList.remove('loadComplete')
+        haventChange = true;
         loadComplete = false;
     }
     audio.oncanplaythrough = function() {
-    	document.querySelector('.loading').classList.add('loadComplete')
+        document.querySelector('.loading').classList.add('loadComplete')
         loadComplete = true;
     }
+    infiniteList(sourceList)
+    switchSongs();
     states()
 
     function states() {
@@ -369,7 +440,7 @@
     }
 
     function backSong() {
-        if (playIndex ==0) {
+        if (playIndex == 0) {
             playIndex = totalSongs;
         }
         playIndex--;
@@ -389,17 +460,42 @@
         if (this.classList.contains('coverAnimate')) {
             this.classList.add('coverAnimateLast')
             this.classList.remove('coverAnimate')
-            var index=playIndex % totalSongs;
+            var index = playIndex % totalSongs;
             var info = sourceList[index];
-            var infoPre=(index==0)?sourceList[totalSongs-1]:sourceList[index-1]; 
-            var infoNext=(index==totalSongs-1)?sourceList[1]:sourceList[index+1]; 
+            var infoPre = (index == 0) ? sourceList[totalSongs - 1] : sourceList[index - 1];
+            var infoNext = (index == totalSongs - 1) ? sourceList[1] : sourceList[index + 1];
             audio.src = info.src;
             document.querySelector('.info-name').textContent = info.name;
             document.querySelector('.info-singer').textContent = info.singer;
             document.getElementById('cover-img').src = info.img;
             this.classList.remove('coverAnimate')
-            if(!document.getElementById('play-btn').classList.contains('pause'))
+            if (!document.getElementById('play-btn').classList.contains('pause'))
                 audio.play();
+            
+            //move list
+            var halfListHeight=infinite.offsetHeight/2;
+            var groups=document.querySelectorAll('.group');
+            var groupHeight=document.querySelector('.group').offsetHeight;
+            var divHeight=document.querySelector('.group').querySelector('div').offsetHeight;
+            var scrollTop=infinite.scrollTop;
+            var min=10000;
+            var minTop=0;
+            var nearest=0;
+            for(var i=0;i<groups.length;i++){
+            	var group=groups[i];
+            	var el=group.querySelector('div:nth-child('+(index+1)+')');
+                var top=el.offsetTop;
+                if(Math.abs(top-(scrollTop+halfListHeight))<min){
+                    min=Math.abs(top-(scrollTop+halfListHeight));
+                    minTop=top;
+                    nearest=i;
+                }
+            }
+            // groups[nearest].querySelector('div:nth-child('+(index+1)+')').style.backgroundColor="lightgrey";
+            var st=Math.floor(halfListHeight/divHeight);
+            var move=scrollTop-minTop+divHeight*st;
+            smoothScrolling(scrollTop,(scrollTop-move),25)
+            
             //preload next/prev songs & img to cache
             document.querySelector('.preload-1').src = infoPre.src;
             document.querySelector('.preload-2').src = infoNext.src;
@@ -410,6 +506,29 @@
         }
     })
 
+    function smoothScrolling(init,end,steps){
+        var scrollDown=(init-end>0)?true:false;
+        var move=Math.abs(init-end)/steps;
+        scroll()
+        function scroll(){
+        	var scrollTop=infinite.scrollTop;
+        	var keep=true;
+        	if(scrollDown){
+        		infinite.scrollTop= scrollTop-move;
+        		keep=(infinite.scrollTop>end)?true:false;
+        	} else{
+        		infinite.scrollTop= scrollTop+move;
+        		keep=(infinite.scrollTop<end)?true:false;
+        	}
+        	
+        	if(keep){
+        	 	requestAnimation(scroll)
+        	} else{
+        		infinite.scrollTop=end
+        	}
+        }
+    }
+
     function playBtn() {
         if (audio.paused) {
             audio.play()
@@ -419,6 +538,56 @@
             this.classList.add('pause')
         }
     }
+
+    function infiniteList(ary) {
+        var root = document.querySelector('.infinite-list')
+        root.scrollTop = 100;
+        var freg = document.createDocumentFragment();
+        var group = document.createElement('DIV');
+        group.classList.add('group')
+        for (var i = 0; i < ary.length; i++) {
+            var div = document.createElement('DIV')
+            div.textContent = ary[i].name;
+            div.setAttribute('index',i)
+            group.appendChild(div)
+        }
+        root.addEventListener('click',function(e){
+            playIndex = e.target.getAttribute('index');
+            switchSongs()
+        })
+        freg.appendChild(group)
+        root.appendChild(freg)
+        var groupHeight = document.querySelector('.group').offsetHeight;
+        var listHeight = root.offsetHeight;
+        var tripleGroupHeight = groupHeight * 3;
+
+        function prependGroup() {
+            var copy = group.cloneNode(true)
+            root.prepend(copy)
+        }
+
+        function appendGroup(count) {
+            var copy = group.cloneNode(true)
+            root.appendChild(copy)
+        }
+        appendGroup()
+        appendGroup()
+        root.scrollTop = groupHeight;
+        root.addEventListener('scroll', function() {
+            if (this.scrollTop == 0) {
+                prependGroup()
+                this.scrollTop = groupHeight;
+                var lastChild = document.querySelector('.group:last-child')
+                this.removeChild(lastChild);
+            } else if (this.scrollTop == (tripleGroupHeight - listHeight)) {
+                appendGroup()
+                var firstChild = document.querySelector('.group:first-child')
+                this.removeChild(firstChild);
+                this.scrollTop = tripleGroupHeight - listHeight - groupHeight;
+            }
+        }, { passive: true })
+    }
+
     document.getElementById('vol-btn').addEventListener('input', function() {
         console.log((this.value) / 10)
         audio.volume = (this.value) / 10
