@@ -319,11 +319,12 @@
     switchSongs();
     audio.onloadstart = function() {
     	document.querySelector('.loading').classList.remove('loadComplete')
-    	audio.play();//seems mobile cant autoplay;
     	haventChange=true;
         loadComplete = false;
     }
-    audio.oncanplay = function() {
+    audio.oncanplaythrough = function() {
+        if(audio.paused)
+            audio.play();//seems mobile cant autoplay;
     	document.querySelector('.loading').classList.add('loadComplete')
         loadComplete = true;
     }
