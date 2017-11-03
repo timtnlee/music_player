@@ -24,7 +24,7 @@
 
     #player {
         box-sizing: border-box;
-        width: 80%;
+        width: 95%;
         max-width: 550px;
         position: relative;
         top: 20vh;
@@ -136,7 +136,40 @@
     .cover #next {
         right: 0;
     }
-
+    .cover #play-btn {
+        transition: opacity 0.3s;
+        opacity: 0.9;
+        text-align: left;
+        position: absolute;
+        left: 15%;
+        width: 70%;
+        height: 250px;
+        overflow: hidden;
+        cursor: pointer;
+        opacity: 0.3;
+    }
+    .cover #play-btn:hover{
+        opacity: 1;
+    }
+    .cover #play-btn img{
+        position: absolute;
+        width: 100px;
+        top:50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+    .cover #play-btn img:first-child{
+        opacity: 0.6;
+    }
+    .cover #play-btn img:last-child{
+        opacity: 0;
+    }
+    .cover #play-btn.pause img:first-child{
+        opacity: 0;
+    }
+    .cover #play-btn.pause img:last-child{
+       opacity: 0.6;;
+    }
     #player .controller {
         margin-top: 20px;
         position: relative;
@@ -167,24 +200,6 @@
         position: relative;
         width: 100%;
         height: 50px;
-    }
-
-    .panel #play-btn {
-        transition: all 0.6s;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        cursor: pointer;
-        width: 20px;
-        height: 20px;
-        border-radius: 2px;
-        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        background-color: rgba(255, 0, 0, 0.6);
-    }
-
-    .panel #play-btn.pause {
-        transform: rotateX(10deg);
-        clip-path: polygon(0% 0%, 100% 50%, 100% 50%, 0% 100%);
     }
 
     .vol-controll {
@@ -228,7 +243,7 @@
 
     #vol-btn:before {
         content: "";
-        width: 80px;
+        width: 100%;
         top: 4px;
         height: 1px;
         background-color: lightgrey;
@@ -271,6 +286,10 @@
                     <div class="info-singer"></div>
                 </div>
             </div>
+            <div id="play-btn" class="pause">                
+                <img src="img/pause-btn.png">
+                <img src="img/play-btn.png">
+            </div>
             <img id="back" class="arrow" src="img/back.svg" onclick="backSong()">
             <img id="next" class="arrow" src="img/next.svg" onclick="nextSong()">
             <div class="loading">loading</div>
@@ -284,7 +303,6 @@
                 <span class="timer-now"></span>
                 <span class="timer-total"></span>
             </div>
-            <div id="play-btn"></div>
             <div class="vol-controll">
                 <img src="img/vol-icon.png" alt="">
                 <input type="range" id="vol-btn" max="10" min="0" value="10">
@@ -323,8 +341,6 @@
         loadComplete = false;
     }
     audio.oncanplaythrough = function() {
-        if(audio.paused)
-            audio.play();//seems mobile cant autoplay;
     	document.querySelector('.loading').classList.add('loadComplete')
         loadComplete = true;
     }
@@ -380,8 +396,9 @@
             document.querySelector('.info-name').textContent = info.name;
             document.querySelector('.info-singer').textContent = info.singer;
             document.getElementById('cover-img').src = info.img;
-            document.getElementById('play-btn').classList.remove('pause')
             this.classList.remove('coverAnimate')
+            if(!document.getElementById('play-btn').classList.contains('pause'))
+                audio.play();
             //preload next/prev songs & img to cache
             document.querySelector('.preload-1').src = infoPre.src;
             document.querySelector('.preload-2').src = infoNext.src;
