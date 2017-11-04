@@ -287,7 +287,7 @@
         top:0;
     }
     .selectArea{
-    	box-sizing: border-box;
+    	/* box-sizing: border-box;
     	pointer-events: none;
     	position: absolute;
     	top: 100px;
@@ -296,18 +296,9 @@
     	border-color: rgba(255,255,255,0.3);
     	border-width: 1px 0px 1px 0px;
     	border-style: solid;
-        width: 100px;
+        width: 100px; */
     }
-    @media screen and (max-width:900px){
-    	#player{
-    		top: 20px;
-    	}
-        .listArea {
-        left:50%;
-        top:320px;
-        transform: translateX(-50%);
-        }
-    }
+    
     .gradient{
         width: 100%;
         height:100%;
@@ -317,7 +308,6 @@
         pointer-events: none;
     }
     .infinite-list {
-        color: white;
         height: 100%;
         /*   border:1px solid black; */
         width: 170px;
@@ -340,6 +330,11 @@
     .group div.moving-to{
     	opacity: 1;
     }
+    .group div[playing="yes"]{
+    	border-width: 3px 0px 3px 0px;
+    	border-color: lightgray;
+    	border-style: double;
+    }
     .group div:hover {
         opacity: 1;
         /*background-color: rgba(255, 255, 255, 0.1);*/
@@ -355,6 +350,16 @@
         color: gray;
         position: absolute;
         bottom: 0;
+    }
+    @media screen and (max-width:900px){
+    	#player{
+    		top: 20px;
+    	}
+        .listArea {
+        left:50%;
+        top:320px;
+        transform: translateX(-50%);
+        }
     }
     </style>
 </head>
@@ -501,7 +506,10 @@
             var nearest;
             for(var i=0;i<groups.length;i++){
             	var group=groups[i];
+            	if(group.querySelector('[playing="yes"]'))
+            		group.querySelector('[playing="yes"]').removeAttribute('playing')
             	var el=group.querySelector('div:nth-child('+(index+1)+')');
+            	el.setAttribute('playing','yes')
                 var top=el.offsetTop;
                 if(Math.abs(top-(scrollTop+halfListHeight))<min){
                     min=Math.abs(top-(scrollTop+halfListHeight));
@@ -509,7 +517,6 @@
                     nearest=el;
                 }
             }
-            // groups[nearest].querySelector('div:nth-child('+(index+1)+')').style.backgroundColor="lightgrey";
             nearest.classList.add('moving-to');
             var st=Math.floor(halfListHeight/divHeight);
             var move=scrollTop-minTop+divHeight*st;
@@ -528,18 +535,16 @@
     function smoothScrolling(move,expectTop,step){
     	var init=infinite.scrollTop;
         var scrollDown=(move>0)?true:false;
-        var perMove=move/25;
+        var perMove=Math.round(move/step);
         scroll()
         function scroll(){
         	var scrollTop=infinite.scrollTop;
         	var elTop=document.querySelector('.moving-to').offsetTop;
         	var keep=true;
-        	
-        	if(scrollDown){
-        		infinite.scrollTop= scrollTop-perMove;
+        	infinite.scrollTop= scrollTop-perMove;
+        	if(scrollDown){        		
         		keep=(elTop-infinite.scrollTop<expectTop)?true:false;
         	} else{
-        		infinite.scrollTop= scrollTop-perMove;
         		keep=(elTop-infinite.scrollTop>expectTop)?true:false;
         	}
         	
@@ -584,12 +589,12 @@
         var tripleGroupHeight = groupHeight * 3;
 
         function prependGroup() {
-            var copy = group.cloneNode(true)
+            var copy = document.querySelector('.group').cloneNode(true)
             root.prepend(copy)
         }
 
         function appendGroup(count) {
-            var copy = group.cloneNode(true)
+            var copy = document.querySelector('.group').cloneNode(true)
             root.appendChild(copy)
         }
         appendGroup()
@@ -601,7 +606,7 @@
                 this.scrollTop = groupHeight;
                 var lastChild = document.querySelector('.group:last-child')
                 this.removeChild(lastChild);
-            } else if (this.scrollTop == (tripleGroupHeight - listHeight)) {
+            } else if (this.scrollTop >= (tripleGroupHeight - listHeight)-1) {
                 appendGroup()
                 var firstChild = document.querySelector('.group:first-child')
                 this.removeChild(firstChild);
@@ -611,7 +616,6 @@
     }
 
     document.getElementById('vol-btn').addEventListener('input', function() {
-        console.log((this.value) / 10)
         audio.volume = (this.value) / 10
     })
     document.getElementById('play-btn').addEventListener('click', playBtn)
