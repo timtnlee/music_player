@@ -438,7 +438,11 @@
         haventChange = true;
         loadComplete = false;
     }
-    audio.oncanplaythrough = function() {
+    audio.onprogress = function() {
+    	document.querySelector('.loading').classList.remove('loadComplete')
+    	loadComplete = false;
+    }
+    audio.oncanplay = function() {
         document.querySelector('.loading').classList.add('loadComplete')
         loadComplete = true;
         if(firstClick)
