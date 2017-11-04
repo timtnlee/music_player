@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <title>my Music Player</title>
     <script src="source.js"></script>
     <style type="text/css">
     @font-face {
@@ -16,7 +16,7 @@
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         background-color: black;
         font-size: 100%;
-        font-family: 'ls';
+        font-family: 'ls', 微軟正黑體;
         user-select: none;
         margin: 0;
         text-align: center;
@@ -331,9 +331,13 @@
     	opacity: 1;
     }
     .group div[playing="yes"]{
-    	border-width: 3px 0px 3px 0px;
+    	/* border-width: 0px 1px 0px 1px;
     	border-color: lightgray;
-    	border-style: double;
+    	border-style: solid; */
+    	color: white;
+    	opacity: 1;
+    	font-size:18px;
+    	background:radial-gradient(rgba(50,50,50,1) 0%,rgba(50,50,50,0) 100%);
     }
     .group div:hover {
         opacity: 1;
@@ -418,6 +422,7 @@
     var playIndex = sourceList.length;
     var haventChange = true;
     var loadComplete = false;
+    var firstClick=false;
     var audio = document.getElementById('audio');
     var cover = document.querySelector('.cover');
     var infinite=document.querySelector('.infinite-list');
@@ -436,6 +441,8 @@
     audio.oncanplaythrough = function() {
         document.querySelector('.loading').classList.add('loadComplete')
         loadComplete = true;
+        if(firstClick)
+        	play();
     }
     infiniteList(sourceList)
     switchSongs();
@@ -451,7 +458,9 @@
             var sec_zero = (sec < 10) ? '0' : '';
             document.querySelector('.timer-now').textContent = min_zero + min + ":" + sec_zero + sec;
             if (haventChange) {
-                document.querySelector('.timer-total').textContent = "/" + Math.floor(audio.duration / 60) + ":" + Math.floor(audio.duration % 60);
+            	var min=Math.floor(audio.duration % 60);
+            	var zero=(min<10)?'0':'';
+                document.querySelector('.timer-total').textContent = "/" + Math.floor(audio.duration / 60) + ":" +zero+min;
                 haventChange = false;
             }
         }
@@ -476,6 +485,7 @@
     }
 
     function switchSongs() {
+    	pause();
         cover.classList.remove('coverAnimateLast')
         cover.classList.add('coverAnimate')
     }
@@ -557,15 +567,21 @@
     }
 
     function playBtn() {
+    	firstClick=true;
         if (audio.paused) {
-            audio.play()
-            this.classList.remove('pause')
+            play();
         } else {
-            audio.pause()
-            this.classList.add('pause')
+            pause();
         }
     }
-
+    function play(){
+        audio.play()
+        document.getElementById('play-btn').classList.remove('pause')
+    }
+    function pause(){
+        audio.pause()
+        document.getElementById('play-btn').classList.add('pause')
+    }
     function infiniteList(ary) {
         var root = document.querySelector('.infinite-list')
         root.scrollTop = 100;
@@ -616,7 +632,7 @@
     }
 
     document.getElementById('vol-btn').addEventListener('input', function() {
-        audio.volume = (this.value) / 10
+        audio.volume = (this.value) / 10;
     })
     document.getElementById('play-btn').addEventListener('click', playBtn)
     var controller = document.querySelector('.controller');

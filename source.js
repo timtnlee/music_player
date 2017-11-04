@@ -29,5 +29,9 @@ var sourceList=[{
 	singer:'張惠妹',
 	src:prifix+'張惠妹-三月.mp3',
 	img:'img/mei-3.jpg'
-}
-]
+},{
+	name:'尋人啟事',
+	singer:'徐佳瑩',
+	src:prifix+'徐佳瑩-尋人啟事.mp3',
+	img:'img/lala.jpg'
+}]
