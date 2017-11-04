@@ -406,7 +406,7 @@
             <div class="selectArea"></div>
         </div>
     </div>
-    <audio id="audio" type="audio/mp3" src="mei.mp3">
+    <audio id="audio" type="audio/mp3">
     </audio>
     <div class="preload">
         <audio class="preload-1"></audio>
@@ -551,13 +551,14 @@
         var scrollDown=(move>0)?true:false;
         var perMove=Math.round(move/step);
         scroll()
+        console.log(scrollDown)
         function scroll(){
         	var scrollTop=infinite.scrollTop;
         	var elTop=document.querySelector('.moving-to').offsetTop;
         	var keep=true;
         	infinite.scrollTop= scrollTop-perMove;
-        	if(scrollDown){        		
-        		keep=(elTop-infinite.scrollTop<expectTop)?true:false;
+        	if(scrollDown){       		
+        		keep=(Math.abs(infinite.scrollTop-elTop)<expectTop)?true:false;
         	} else{
         		keep=(elTop-infinite.scrollTop>expectTop)?true:false;
         	}
@@ -609,12 +610,12 @@
         var tripleGroupHeight = groupHeight * 3;
 
         function prependGroup() {
-            var copy = document.querySelector('.group').cloneNode(true)
+            var copy = document.querySelector('.group:last-child').cloneNode(true)
             root.prepend(copy)
         }
 
         function appendGroup(count) {
-            var copy = document.querySelector('.group').cloneNode(true)
+            var copy = document.querySelector('.group:first-child').cloneNode(true)
             root.appendChild(copy)
         }
         appendGroup()
