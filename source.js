@@ -5,6 +5,11 @@ var sourceList=[{
 	src:prifix+'mei.mp3',
 	img:'img/mei-1.jpg'
 },{
+	name:'勇敢',
+	singer:'張惠妹',
+	src:prifix+'張惠妹-勇敢.mp3',
+	img:'img/mei-2.jpeg'
+},{
 	name:'愛笑的眼睛',
 	singer:'林俊傑',
 	src:prifix+'林俊傑 愛笑的眼睛.mp3',
