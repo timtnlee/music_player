@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Document</title>
     <script src="source.js"></script>
     <style type="text/css">
@@ -323,6 +324,9 @@
         font-size: 16px;
         padding-top: 10px;
     }
+    .group div.moving-to{
+    	opacity: 1;
+    }
     .group div:hover {
         opacity: 1;
         /*background-color: rgba(255, 255, 255, 0.1);*/
@@ -480,7 +484,7 @@
             var scrollTop=infinite.scrollTop;
             var min=10000;
             var minTop=0;
-            var nearest=0;
+            var nearest;
             for(var i=0;i<groups.length;i++){
             	var group=groups[i];
             	var el=group.querySelector('div:nth-child('+(index+1)+')');
@@ -488,13 +492,14 @@
                 if(Math.abs(top-(scrollTop+halfListHeight))<min){
                     min=Math.abs(top-(scrollTop+halfListHeight));
                     minTop=top;
-                    nearest=i;
+                    nearest=el;
                 }
             }
             // groups[nearest].querySelector('div:nth-child('+(index+1)+')').style.backgroundColor="lightgrey";
+            nearest.classList.add('moving-to');
             var st=Math.floor(halfListHeight/divHeight);
             var move=scrollTop-minTop+divHeight*st;
-            smoothScrolling(scrollTop,(scrollTop-move),25)
+            smoothScrolling(move,divHeight*st,25)
             
             //preload next/prev songs & img to cache
             document.querySelector('.preload-1').src = infoPre.src;
@@ -506,25 +511,29 @@
         }
     })
 
-    function smoothScrolling(init,end,steps){
-        var scrollDown=(init-end>0)?true:false;
-        var move=Math.abs(init-end)/steps;
+    function smoothScrolling(move,expectTop,step){
+    	var init=infinite.scrollTop;
+        var scrollDown=(move>0)?true:false;
+        var perMove=move/25;
         scroll()
         function scroll(){
         	var scrollTop=infinite.scrollTop;
+        	var elTop=document.querySelector('.moving-to').offsetTop;
         	var keep=true;
+        	
         	if(scrollDown){
-        		infinite.scrollTop= scrollTop-move;
-        		keep=(infinite.scrollTop>end)?true:false;
+        		infinite.scrollTop= scrollTop-perMove;
+        		keep=(elTop-infinite.scrollTop<expectTop)?true:false;
         	} else{
-        		infinite.scrollTop= scrollTop+move;
-        		keep=(infinite.scrollTop<end)?true:false;
+        		console.log(elTop-infinite.scrollTop)
+        		infinite.scrollTop= scrollTop-perMove;
+        		keep=(elTop-infinite.scrollTop>expectTop)?true:false;
         	}
         	
         	if(keep){
         	 	requestAnimation(scroll)
         	} else{
-        		infinite.scrollTop=end
+        		document.querySelector('.moving-to').classList.remove('moving-to')
         	}
         }
     }
